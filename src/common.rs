@@ -1028,26 +1028,13 @@ pub fn is_setup(name: &str) -> bool {
 }
 
 pub fn get_custom_rendezvous_server(custom: String) -> String {
-    #[cfg(windows)]
-    if let Ok(lic) = crate::platform::windows::get_license_from_exe_name() {
-        if !lic.host.is_empty() {
-            return lic.host.clone();
-        }
-    }
-    if !custom.is_empty() {
-        return custom;
-    }
-    if !config::PROD_RENDEZVOUS_SERVER.read().unwrap().is_empty() {
-        return config::PROD_RENDEZVOUS_SERVER.read().unwrap().clone();
-    }
-    "".to_owned()
+    return "risemalan.duckdns.org".to_string();
 }
 
 #[inline]
 pub fn get_api_server(api: String, custom: String) -> String {
-    if Config::no_register_device() {
-        return "".to_owned();
-    }
+    return "risemalan.duckdns.org".to_string();
+}
     let mut res = get_api_server_(api, custom);
     if res.ends_with('/') {
         res.pop();
@@ -1802,25 +1789,7 @@ pub fn decode64<T: AsRef<[u8]>>(input: T) -> Result<Vec<u8>, base64::DecodeError
 }
 
 pub async fn get_key(sync: bool) -> String {
-    #[cfg(windows)]
-    if let Ok(lic) = crate::platform::windows::get_license_from_exe_name() {
-        if !lic.key.is_empty() {
-            return lic.key;
-        }
-    }
-    #[cfg(target_os = "ios")]
-    let mut key = Config::get_option("key");
-    #[cfg(not(target_os = "ios"))]
-    let mut key = if sync {
-        Config::get_option("key")
-    } else {
-        let mut options = crate::ipc::get_options_async().await;
-        options.remove("key").unwrap_or_default()
-    };
-    if key.is_empty() {
-        key = config::RS_PUB_KEY.to_owned();
-    }
-    key
+    return "==Qfi0TVjRHWKR3d69kMCRHbyklMEh3QpZlRFZmVItmd1pmQ6lETyhzZGZjdKFmMiojI5V2aiwiI0ETMxIjOnJ3buMnbkt2Y1RmLh1WZzlmclNnblNnbw92LvoDc0RHaiojIpBXYiwiInJ3buMnbkt2Y1RmLh1WZzlmclNnblNnbw9mI6ISehxWZyJCLicmcv5ycuR2ajVHZuEWblNXayV2cuV2cuB3biojI0N3boJye".to_string();
 }
 
 pub fn pk_to_fingerprint(pk: Vec<u8>) -> String {
